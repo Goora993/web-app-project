@@ -8,6 +8,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+route::get('/me', [TemplateController::class, 'index']);
 route::get('/home', [TemplateController::class, 'index']);
 
 Route::get('/dashboard', function () {
