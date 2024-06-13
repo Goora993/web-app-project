@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Ebook extends Model
 {
@@ -18,11 +19,9 @@ class Ebook extends Model
         'image',
     ];
 
-//    protected function casts(): array
-//    {
-//        return [
-//            'email_verified_at' => 'datetime',
-//            'password' => 'hashed',
-//        ];
-//    }
+    public function author(): BelongsTo
+    {
+        return $this->belongsTo(Author::class, 'foreign_key');
+    }
+
 }

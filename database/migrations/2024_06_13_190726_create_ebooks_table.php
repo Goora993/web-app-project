@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Author;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,11 +16,15 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('title');
-            $table->string('author');
+            $table->foreignIdFor(Author::class, 'author_id');
             $table->string('publisher');
             $table->string('category');
             $table->text('description');
             $table->string('image');
+        });
+
+        Schema::table('ebooks', function (Blueprint $table) {
+            $table->foreign('author_id')->references('id')->on('authors');
         });
     }
 
