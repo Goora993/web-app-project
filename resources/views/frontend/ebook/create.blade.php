@@ -1,3 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ asset('assets/css/shared/style.css') }}">
+</head>
+<body>
 <h1> Tworzenie ebooka </h1>
 
 <form id="addEbookForm" action="{{ route('ebook.store') }}" method="POST" novalidate="novalidate">
@@ -37,3 +45,7 @@
         <button type="submit" class="btn btn-primary">Dodaj</button>
     </div>
 </form>
+
+
+</body>
+</html>
