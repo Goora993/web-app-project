@@ -31,7 +31,7 @@
     </div>
     <div class="form-group">
         <label for="ebookImage">Okładka</label>
-        <input type="file" class="form-control-file" id="ebookImage" name="image">
+        <input type="file" class="form-control-file" id="ebookImage" name="image" accept="image/*" >
     </div>
     <div class="form-group col-md-4">
         <label for="ebookAuthor">Autor</label>
