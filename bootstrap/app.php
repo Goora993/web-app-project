@@ -9,8 +9,10 @@ return Application::configure(basePath: dirname(__DIR__))
         web: __DIR__.'/../routes/web.php',
         using: function () {
             Route::middleware('web')
-                ->group(base_path('routes/authors.php'));
+                ->group(base_path('routes/author.php'));
 
+            Route::middleware('web')
+                ->group(base_path('routes/ebook.php'));
         },
 
         commands: __DIR__.'/../routes/console.php',

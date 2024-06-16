@@ -1,23 +1,13 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\TemplateController;
+use App\Http\Controllers\EbookController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/ebook', [EbookController::class, 'ebook']);
 
-route::get('/home', [TemplateController::class, 'index']);
+Route::get('/ebooks', [EbookController::class, 'ebooks']);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+Route::get('/ebook/add', [EbookController::class, 'create'])->name('ebook.create');
+Route::post('/ebook/store', [EbookController::class, 'store'])->name('ebook.store');
 
 require __DIR__.'/auth.php';
