@@ -16,7 +16,8 @@
     </div>
     <div class="form-group">
         <label for="ebookDescription">Opis</label>
-        <textarea type="text" class="form-control" id="ebookDescription" name="description" placeholder="Opis"></textarea>
+        <textarea type="text" class="form-control" id="ebookDescription" name="description"
+                  placeholder="Opis"></textarea>
     </div>
     <div class="form-group">
         <label for="ebookImage">Okładka</label>
@@ -25,13 +26,11 @@
     <div class="form-group col-md-4">
         <label for="ebookAuthor">Autor</label>
         <select id="ebookAuthor" name="author" class="form-control">
-            <?php
-            foreach($authors as $author) { ?>
-            <option value="<?= $author['id'] . " " . $author['name'] . " " . $author['surname'] ?>">
-                    <?= $author['id'] . " " . $author['name'] . " " . $author['surname'] ?>
-            </option>
-                <?php
-            } ?>
+            @foreach($authors as $author)
+                <option value="{{$author['id'] . " " . $author['name'] . " " . $author['surname']}}">
+                    {{$author['id'] . " " . $author['name'] . " " . $author['surname']}}
+                </option>
+            @endforeach
         </select>
     </div>
     <div class="form-group">
