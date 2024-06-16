@@ -1,12 +1,19 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
+    background-color: #ffda76;
     margin: 0;
     padding: 20px;
 }
 
 /* Stylizacja nagłówka */
 h1 {
+    border: 1px solid #000000;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #c6a22a;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
     color: #333;
     text-align: center;
     margin-bottom: 20px;
@@ -14,12 +21,20 @@ h1 {
 
 /* Kontener formularza */
 form#addEbookForm {
+    border: 1px solid #000000;
     max-width: 600px;
     margin: 0 auto;
-    background-color: #fff;
+    background-color: #c6a22a;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    margin-bottom: 10px
+}
+
+.sizer{
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: transparent;
 }
 
 /* Stylizacja grup formularza */
@@ -40,7 +55,7 @@ form#addEbookForm {
     width: 100%;
     padding: 10px;
     font-size: 14px;
-    border: 1px solid #ddd;
+    border: 1px solid #000000;
     border-radius: 4px;
     box-sizing: border-box;
 }
@@ -56,7 +71,7 @@ form#addEbookForm {
 
 /* Stylizacja przycisku */
 .btn-primary {
-    background-color: #007bff;
+    background-color: #c6a22a;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -67,7 +82,7 @@ form#addEbookForm {
 }
 
 .btn-primary:hover {
-    background-color: #0056b3;
+    background-color: #a58424;
 }
 
 /* Media queries dla mniejszych ekranów */

@@ -5,9 +5,11 @@
     <title>Document</title>
     <link rel="stylesheet" href="{{ asset('assets/css/shared/style.css') }}">
 </head>
-<body>
-<h1> Tworzenie ebooka </h1>
 
+<body>
+
+<div class="sizer">
+<h1> Dodawanie ebooka </h1>
 <form id="addEbookForm" action="{{ route('ebook.store') }}" method="POST" novalidate="novalidate">
     {{ csrf_field() }}
     <div class="form-group col-md-6">
@@ -41,11 +43,10 @@
             @endforeach
         </select>
     </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Dodaj</button>
-    </div>
 </form>
-
-
+    <div class="form-group">
+        <button type="submit" style="float: right" class="btn btn-primary">Dodaj</button>
+    </div>
+</div>
 </body>
 </html>
