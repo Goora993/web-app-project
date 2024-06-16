@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ebook;
 use App\Models\Author;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class EbookController extends Controller
 {
@@ -32,15 +33,18 @@ class EbookController extends Controller
         $ebook = new Ebook();
         $ebookAuthor = $req->author;
         $author = $this->createAuthorFromEbookAuthor($ebookAuthor);
+        $image = $this->saveImage($req->file('image'));
 
         $ebook->title = $req->title;
-        $ebook->author_id = $author->id;
         $ebook->publisher = $req->publisher;
         $ebook->category = $req->category;
         $ebook->description = $req->description;
-        $ebook->image = $req->image;
+        $ebook->author_id = $author->id;
+        $ebook->image = $image;
 
-        $ebook -> save();
+        $ebook->save();
+
+        return redirect('/ebooks');
     }
 
     private function createAuthorFromEbookAuthor($ebookAuthor): Author
@@ -53,6 +57,13 @@ class EbookController extends Controller
         $author->surname = $parts[2];
 
         return $author;
+    }
+
+    private function saveImage($image): string
+    {
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $image->storeAs('images', $imageName);
+        return Storage::path($imageName);
     }
 
 }

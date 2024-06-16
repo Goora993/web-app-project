@@ -1,6 +1,14 @@
 <h1> Tworzenie ebooka </h1>
 
-<form id="addEbookForm" action="{{ route('ebook.store') }}" method="POST" novalidate="novalidate">
+@if(isset($errorMessageDuration))
+    <div class="alert alert-danger">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        {{ $errorMessageDuration }}
+        {{ Input::get('title') }}
+    </div>
+@endif
+
+<form id="addEbookForm" action="{{ route('ebook.store') }}" method="POST" enctype="multipart/form-data">
     {{ csrf_field() }}
     <div class="form-group col-md-6">
         <label for="inputEbookTitle">Tytuł</label>
@@ -21,7 +29,7 @@
     </div>
     <div class="form-group">
         <label for="ebookImage">Okładka</label>
-        <input type="file" class="form-control-file" id="ebookImage" name="image">
+        <input type="file" class="form-control-file" id="ebookImage" name="image" accept="image/*" >
     </div>
     <div class="form-group col-md-4">
         <label for="ebookAuthor">Autor</label>
