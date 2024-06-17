@@ -7,6 +7,8 @@ use App\Models\Ebook;
 use App\Models\Author;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class EbookController extends Controller
 {
@@ -48,7 +50,7 @@ class EbookController extends Controller
 
         $ebook->save();
 
-        return redirect('/ebooks');
+        return redirect('/');
     }
 
     private function createAuthorFromEbookAuthor($ebookAuthor): Author
@@ -70,8 +72,13 @@ class EbookController extends Controller
 
     private function saveImage($image): string
     {
-        $path = $image->store('images','public');
-        $url = Storage::url($path);
+        $manager = new ImageManager(new Driver());
+        $nameGen = hexdec(uniqid()).'.'.$image->getClientOriginalExtension();
+        $path = base_path('public/storage/images'.DIRECTORY_SEPARATOR.$nameGen);
+        $url = '/storage/images'.DIRECTORY_SEPARATOR.$nameGen;
+        $img = $manager->read($image);
+        $img = $img->resize(300,200);
+        $img->toJpeg(80)->save($path);
         return $url;
     }
 

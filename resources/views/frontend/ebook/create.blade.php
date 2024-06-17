@@ -11,7 +11,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="{{asset('css/styles.css')}}" rel="stylesheet" />
-    {{ csrf_field() }}
 </head>
 
 <body>
@@ -55,6 +54,7 @@
 <!-- Section-->
 <section class="py-5">
     <form id="addEbookForm" action="{{ route('ebook.store') }}" method="POST" novalidate="novalidate" enctype="multipart/form-data">
+        {{ csrf_field() }}
         <div class="form-group col-md-6">
             <label for="inputEbookTitle">Tytuł</label>
             <input type="text" class="form-control" id="inputEbookTitle" name="title" placeholder="Tytuł">
