@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Ebook;
 use App\Models\Author;
 use Illuminate\Http\Request;
@@ -25,7 +26,8 @@ class EbookController extends Controller
     public function create()
     {
         $authors = Author::all();
-        return view('frontend.ebook.create', ['authors' => $authors]);
+        $categories = Category::all();
+        return view('frontend.ebook.create', ['authors' => $authors, 'categories' => $categories]);
     }
 
     public function store(Request $req)
@@ -33,13 +35,15 @@ class EbookController extends Controller
         $ebook = new Ebook();
         $ebookAuthor = $req->author;
         $author = $this->createAuthorFromEbookAuthor($ebookAuthor);
+        $category = $this->getCategory($req->category);
         $image = $this->saveImage($req->file('image'));
 
         $ebook->title = $req->title;
         $ebook->publisher = $req->publisher;
-        $ebook->category = $req->category;
         $ebook->description = $req->description;
+        $ebook->price = $req->price;
         $ebook->author_id = $author->id;
+        $ebook->category_id = $category->id;
         $ebook->image = $image;
 
         $ebook->save();
@@ -57,6 +61,11 @@ class EbookController extends Controller
         $author->surname = $parts[2];
 
         return $author;
+    }
+
+    private function getCategory($ebookCategory): Category {
+        $category = Category::where('name', $ebookCategory)->first();
+        return $category;
     }
 
     private function saveImage($image): string

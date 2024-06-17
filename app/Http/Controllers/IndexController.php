@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Author;
+use App\Models\Category;
 use App\Models\Ebook;
 
 class IndexController extends Controller
@@ -11,6 +12,7 @@ class IndexController extends Controller
     {
         $ebooks = Ebook::all();
         $authors = Author::all();
-        return view('frontend.index', ['ebooks' => $ebooks, 'authors' => $authors]);
+        $categories = Category::all();
+        return view('frontend.index', ['ebooks' => $ebooks, 'authors' => $authors, 'categories' => $categories]);
     }
 }
