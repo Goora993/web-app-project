@@ -6,7 +6,6 @@ use App\Models\Category;
 use App\Models\Ebook;
 use App\Models\Author;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 

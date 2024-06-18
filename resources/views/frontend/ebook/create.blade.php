@@ -22,8 +22,8 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Strona główna</a></li>
-                <li class="nav-item"><a class="nav-link" href="#!">Dodaj książkę</a></li>
-                <li class="nav-item"><a class="nav-link" href="#!">Dodaj autora</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{route('ebook.create')}}">Dodaj książkę</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{route('author.create')}}">Dodaj autora</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -77,8 +77,7 @@
         </div>
         <div class="form-group">
             <label for="ebookDescription">Opis</label>
-            <textarea type="text" class="form-control" id="ebookDescription" name="description"
-                      placeholder="Opis"></textarea>
+            <textarea type="text" class="form-control" id="ebookDescription" name="description" placeholder="Opis"></textarea>
         </div>
         <div class="form-group">
             <label for="ebookImage">Okładka</label>
