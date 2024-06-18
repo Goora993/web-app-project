@@ -44,4 +44,31 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    public function checkRoles($roles): void
+    {
+        if (!is_array($roles)) {
+            $roles = [$roles];
+        }
+
+        if (!$this->hasAnyRole($roles)) {
+            auth()->logout();
+            abort(404);
+        }
+    }
+
+    public function hasRole(string $role): bool
+    {
+        return (bool) $this->roles()->where('name', $role)->first();
+    }
+
+    public function hasAnyRole(string $roles): bool
+    {
+        return (bool) $this->roles()->whereIn('name', $roles)->first();
+    }
 }

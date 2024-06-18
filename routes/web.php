@@ -1,17 +1,15 @@
 <?php
 
 use App\Http\Controllers\IndexController;
-use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
 
-Route::get('', [IndexController::class, 'index']);
-
-Route::get('/user-login', [LoginController::class, 'login']);
+Route::get(RouteServiceProvider::HOME, [IndexController::class, 'index'])->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
