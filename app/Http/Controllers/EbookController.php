@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Ebook;
 use App\Models\Author;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class EbookController extends Controller
 {
@@ -25,7 +28,8 @@ class EbookController extends Controller
     public function create()
     {
         $authors = Author::all();
-        return view('frontend.ebook.create', ['authors' => $authors]);
+        $categories = Category::all();
+        return view('frontend.ebook.create', ['authors' => $authors, 'categories' => $categories]);
     }
 
     public function store(Request $req)
@@ -33,18 +37,20 @@ class EbookController extends Controller
         $ebook = new Ebook();
         $ebookAuthor = $req->author;
         $author = $this->createAuthorFromEbookAuthor($ebookAuthor);
+        $category = $this->getCategory($req->category);
         $image = $this->saveImage($req->file('image'));
 
         $ebook->title = $req->title;
         $ebook->publisher = $req->publisher;
-        $ebook->category = $req->category;
         $ebook->description = $req->description;
+        $ebook->price = $req->price;
         $ebook->author_id = $author->id;
+        $ebook->category_id = $category->id;
         $ebook->image = $image;
 
         $ebook->save();
 
-        return redirect('/ebooks');
+        return redirect('/');
     }
 
     private function createAuthorFromEbookAuthor($ebookAuthor): Author
@@ -59,11 +65,21 @@ class EbookController extends Controller
         return $author;
     }
 
+    private function getCategory($ebookCategory): Category {
+        $category = Category::where('name', $ebookCategory)->first();
+        return $category;
+    }
+
     private function saveImage($image): string
     {
-        $imageName = time() . '.' . $image->getClientOriginalExtension();
-        $imagePath = $image->storeAs('images', $imageName, 'public');
-        return Storage::disk('public')->path($imagePath);
+        $manager = new ImageManager(new Driver());
+        $nameGen = hexdec(uniqid()).'.'.$image->getClientOriginalExtension();
+        $path = base_path('public/storage/images'.DIRECTORY_SEPARATOR.$nameGen);
+        $url = '/storage/images'.DIRECTORY_SEPARATOR.$nameGen;
+        $img = $manager->read($image);
+        $img = $img->resize(300,200);
+        $img->toJpeg(80)->save($path);
+        return $url;
     }
 
 }

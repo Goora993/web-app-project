@@ -1,14 +1,13 @@
 <?php
 
+use App\Http\Controllers\IndexController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\TemplateController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('', [IndexController::class, 'index']);
 
-route::get('/home', [TemplateController::class, 'index']);
+Route::get('/user-login', [LoginController::class, 'login']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
