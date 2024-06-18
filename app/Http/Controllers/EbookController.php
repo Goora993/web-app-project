@@ -62,8 +62,8 @@ class EbookController extends Controller
     private function saveImage($image): string
     {
         $imageName = time() . '.' . $image->getClientOriginalExtension();
-        $imagePath = $image->storeAs('images', $imageName, 'public');
-        return Storage::disk('public')->path($imagePath);
+        $image->storeAs('images', $imageName);
+        return Storage::path($imageName);
     }
 
 }

@@ -17,11 +17,17 @@ class Ebook extends Model
         'category',
         'description',
         'image',
+        'price',
     ];
 
     public function author(): BelongsTo
     {
         return $this->belongsTo(Author::class, 'foreign_key');
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'foreign_key');
     }
 
 }
