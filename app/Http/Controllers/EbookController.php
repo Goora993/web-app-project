@@ -6,7 +6,6 @@ use App\Models\Category;
 use App\Models\Ebook;
 use App\Models\Author;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
@@ -60,6 +59,7 @@ class EbookController extends Controller
         $author = new Author();
         $author->id = $parts[0];
         $author->name = $parts[1];
+        $author->surname = $parts[2];
 
         return $author;
     }
