@@ -1,10 +1,13 @@
 <?php
 
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('', [IndexController::class, 'index']);
+
+Route::get('/user-login', [LoginController::class, 'login']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
