@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+
+use App\Models\Category;
 
 class LoginController extends Controller
 {
     public function login()
-        {
-
-           return view('frontend.index');
-        }
+    {
+        $categories = Category::all();
+        return view('frontend.login', ['categories' => $categories]);
+    }
 }
