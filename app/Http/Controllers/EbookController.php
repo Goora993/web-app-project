@@ -60,7 +60,6 @@ class EbookController extends Controller
         $author = new Author();
         $author->id = $parts[0];
         $author->name = $parts[1];
-        $author->surname = $parts[2];
 
         return $author;
     }

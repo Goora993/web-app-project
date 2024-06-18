@@ -13,7 +13,6 @@ class Author extends Model
     protected $fillable = [
         'title',
         'name',
-        'surname',
     ];
 
     public function ebooks(): HasMany
