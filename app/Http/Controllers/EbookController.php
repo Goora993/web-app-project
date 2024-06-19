@@ -7,6 +7,7 @@ use App\Models\Ebook;
 use App\Models\Author;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
@@ -18,11 +19,13 @@ class EbookController extends Controller
         return view('frontend.ebook.list', ['ebooks' => $ebooks]);
     }
 
-    public function ebook()
+    public function details($id)
     {
-        // get single ebook by id
-        $ebook = Ebook::all();
-        return view('frontend.ebook.single', ['name' => $ebook]);
+        $ebook = DB::table('ebooks')->where('id', $id)->first();
+        $categories = Category::all();
+        $ebook_cat_name = DB::table('categories')->where('id', $ebook->category_id)->first()->name;
+        $ebook_author_name = DB::table('authors')->where('id', $ebook->author_id)->first()->name;
+        return view('user.ebook.details', ['ebook' => $ebook, 'categories' => $categories, 'ebook_cat_name' => $ebook_cat_name, 'ebook_author_name' => $ebook_author_name]);
     }
 
     public function create()
@@ -59,6 +62,12 @@ class EbookController extends Controller
         } else {
             abort(403);
         }
+    }
+
+    public function update(Request $req)
+    {
+//        $ebook = Ebook::all();
+//        return view('admin.ebook.create', ['name' => $ebook]);
     }
 
     private function createAuthorFromEbookAuthor($ebookAuthor): Author

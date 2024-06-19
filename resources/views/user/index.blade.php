@@ -120,7 +120,9 @@
                 <div class="col mb-5">
                     <div class="card h-100">
                         <!-- Product image-->
-                        <img class="card-img-top" src="{{$ebook->image}}" alt="..."/>
+                        <a href="{{route('ebook.details', ['id' => $ebook->id])}}">
+                            <img class="card-img-top" src="{{$ebook->image}}" alt="..."  />
+                        </a>
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">
