@@ -5,7 +5,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
 
-Route::get(RouteServiceProvider::HOME, [IndexController::class, 'index'])->name('home');
+Route::get('/', [IndexController::class, 'index'])->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
