@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Ebook;
 use App\Models\Author;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
@@ -28,7 +29,12 @@ class EbookController extends Controller
     {
         $authors = Author::all();
         $categories = Category::all();
-        return view('frontend.ebook.create', ['authors' => $authors, 'categories' => $categories]);
+
+        return Auth::user()->roles()->first()->name == 'admin'
+            ?
+            view('admin.ebook.create', ['authors' => $authors, 'categories' => $categories])
+            :
+            abort(403);
     }
 
     public function store(Request $req)
@@ -47,9 +53,12 @@ class EbookController extends Controller
         $ebook->category_id = $category->id;
         $ebook->image = $image;
 
-        $ebook->save();
-
-        return redirect('/');
+        if (Auth::user()->roles()->first()->name == 'admin') {
+            $ebook->save();
+            return redirect('/');
+        } else {
+            abort(403);
+        }
     }
 
     private function createAuthorFromEbookAuthor($ebookAuthor): Author
@@ -64,7 +73,8 @@ class EbookController extends Controller
         return $author;
     }
 
-    private function getCategory($ebookCategory): Category {
+    private function getCategory($ebookCategory): Category
+    {
         $category = Category::where('name', $ebookCategory)->first();
         return $category;
     }
@@ -72,11 +82,11 @@ class EbookController extends Controller
     private function saveImage($image): string
     {
         $manager = new ImageManager(new Driver());
-        $nameGen = hexdec(uniqid()).'.'.$image->getClientOriginalExtension();
-        $path = base_path('public/storage/images'.DIRECTORY_SEPARATOR.$nameGen);
-        $url = '/storage/images'.DIRECTORY_SEPARATOR.$nameGen;
+        $nameGen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+        $path = base_path('public/storage/images' . DIRECTORY_SEPARATOR . $nameGen);
+        $url = '/storage/images' . DIRECTORY_SEPARATOR . $nameGen;
         $img = $manager->read($image);
-        $img = $img->resize(300,200);
+        $img = $img->resize(300, 200);
         $img->toJpeg(80)->save($path);
         return $url;
     }
