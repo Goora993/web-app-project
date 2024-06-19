@@ -23,9 +23,19 @@ class EbookController extends Controller
     {
         $ebook = DB::table('ebooks')->where('id', $id)->first();
         $categories = Category::all();
+        $authors = Author::all();
         $ebook_cat_name = DB::table('categories')->where('id', $ebook->category_id)->first()->name;
         $ebook_author_name = DB::table('authors')->where('id', $ebook->author_id)->first()->name;
-        return view('user.ebook.details', ['ebook' => $ebook, 'categories' => $categories, 'ebook_cat_name' => $ebook_cat_name, 'ebook_author_name' => $ebook_author_name]);
+
+        if (Auth::user() == null) {
+            return view('user.ebook.details', ['ebook' => $ebook, 'categories' => $categories, 'ebook_cat_name' => $ebook_cat_name, 'ebook_author_name' => $ebook_author_name]);
+        } else {
+            return Auth::user()->roles()->first()->name == 'admin'
+                ?
+                view('admin.ebook.details', ['ebook' => $ebook, 'authors' => $authors, 'categories' => $categories, 'ebook_cat_name' => $ebook_cat_name, 'ebook_author_name' => $ebook_author_name])
+                :
+                view('user.ebook.details', ['ebook' => $ebook, 'categories' => $categories, 'ebook_cat_name' => $ebook_cat_name, 'ebook_author_name' => $ebook_author_name]);
+        }
     }
 
     public function create()
@@ -64,10 +74,28 @@ class EbookController extends Controller
         }
     }
 
-    public function update(Request $req)
+    public function update($id, Request $req)
     {
-//        $ebook = Ebook::all();
-//        return view('admin.ebook.create', ['name' => $ebook]);
+        $ebook = Ebook::find($id);
+        $ebookAuthor = $req->author;
+        $author = $this->createAuthorFromEbookAuthor($ebookAuthor);
+        $category = $this->getCategory($req->category);
+        $image = $this->saveImage($req->file('image'));
+
+        $ebook->title = $req->title;
+        $ebook->publisher = $req->publisher;
+        $ebook->description = $req->description;
+        $ebook->price = $req->price;
+        $ebook->author_id = $author->id;
+        $ebook->category_id = $category->id;
+        $ebook->image = $image;
+
+        if (Auth::user()->roles()->first()->name == 'admin') {
+            $ebook->update();
+            return redirect('/');
+        } else {
+            abort(403);
+        }
     }
 
     private function createAuthorFromEbookAuthor($ebookAuthor): Author
@@ -77,7 +105,6 @@ class EbookController extends Controller
         $author = new Author();
         $author->id = $parts[0];
         $author->name = $parts[1];
-        $author->surname = $parts[2];
 
         return $author;
     }

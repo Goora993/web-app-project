@@ -80,7 +80,7 @@
         </div>
         <div class="form-group">
             <label for="ebookImage">Okładka</label>
-            <img class="card-img-top" src="{{$ebook->image}}" alt="..."  />
+            <img class="card-img-top" style="width: 400px; height: 300px;" src="{{$ebook->image}}" alt="..."  />
         </div>
     </form>
 </section>
