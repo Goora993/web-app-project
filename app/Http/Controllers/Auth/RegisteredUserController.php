@@ -49,7 +49,6 @@ class RegisteredUserController extends Controller
 
         $user->roles()->attach(Role::where('name', 'user')->first());
 
-//        return redirect(route('/', absolute: false));
-        return redirect(RouteServiceProvider::HOME);
+        return redirect(route('/', absolute: false));
     }
 }
