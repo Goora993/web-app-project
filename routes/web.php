@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [IndexController::class, 'index'])->name('home');
