@@ -16,7 +16,7 @@ class IndexController extends Controller
         $categories = Category::all();
 
         if (Auth::user() == null) {
-            return view('user.index', ['ebooks' => $ebooks, 'authors' => $authors, 'categories' => $categories]);
+            return view('guest.index', ['ebooks' => $ebooks, 'authors' => $authors, 'categories' => $categories]);
         } else {
             return Auth::user()->roles()->first()->name == 'admin'
                 ?

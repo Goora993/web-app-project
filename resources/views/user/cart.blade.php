@@ -12,6 +12,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"/>
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="{{asset('css/styles.css')}}" rel="stylesheet"/>
+    <!-- JQuery-->
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 </head>
 <body>
 <!-- Navigation-->
@@ -34,7 +36,7 @@
                     </ul>
                 </li>
             </ul>
-            <form class="d-flex" action="{{ route('cart.details') }}" method="GET" >
+            <form class="d-flex" action="{{ route('cart.details') }}" method="GET">
                 @php $cartQuantity = 0 @endphp
                 @if(session('cart') > 1)
                     @foreach(session('cart') as $id => $details)
@@ -88,82 +90,115 @@
     </div>
 </header>
 <!-- Section-->
+
 <section class="py-5">
-    <div class="container px-4 px-lg-5 mt-5">
-        <form action="/"
-              method="get"
-              style="width: 100%; max-width: 30rem">
+    <table id="cart" class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Ebook</th>
+            <th>Cena</th>
+            <th>Ilość</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @php $total = 0 @endphp
+        @if(session('cart'))
+            @foreach(session('cart') as $id => $details)
 
-            <div class="input-group my-5">
-                <input type="text"
-                       class="form-control"
-                       name="key"
-                       placeholder="Szukaj ebooka..."
-                       aria-label="Szukaj ebooka..."
-                       aria-describedby="basic-addon2">
-
-                <button class="input-group-text
-		                 btn btn-primary"
-                        id="basic-addon2">
-                    <img src="{{ url('storage/static/search.png') }}"
-                         width="20">
-
-                </button>
-            </div>
-        </form>
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-            <?php if (sizeof($ebooks) == 0){ ?>
-            <div class="alert alert-warning
-        	            text-center p-5"
-                 role="alert">
-                <img src="img/empty.png"
-                     width="100">
-                <br>
-                Brak książek w bazie danych
-            </div>
-            <?php }else{ ?>
-            @foreach($ebooks as $ebook)
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Product image-->
-                        <a href="{{route('ebook.details', ['id' => $ebook->id])}}">
-                            <img class="card-img-top" src="{{$ebook->image}}" alt="..."  />
-                        </a>
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <h5 class="fw-bolder">{{$ebook->title}}</h5>
-                                <!-- Product author-->
-                                    @foreach($authors as $author)
-                                        @if ($author['id'] == $ebook['author_id'])
-                                            <h6 class="fw-bolder">{{$author['name']}}</h6>
-                                            @break
-                                        @endif
-                                    @endforeach
-
-                                <!-- Product price-->
-                                {{$ebook->price}} zł
+                <tr rowId="{{ $id }}">
+                    <td data-th="Ebook">
+                        <div class="row">
+                            <div class="col-sm-3 hidden-xs"><img src="{{ $details['image'] }}" class="card-img-top"/>
+                            </div>
+                            <div class="col-sm-9">
+                                <h4 class="nomargin">{{ $details['name'] }}</h4>
                             </div>
                         </div>
-                        <!-- Product actions-->
-{{--                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">--}}
-{{--                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ route('cart.add', ['id' => $ebook->id]) }}">Dodaj do koszyka</a></div>--}}
-{{--                        </div>--}}
-                        <p class="btn-holder"><a href="{{ route('cart.add', $ebook->id) }}" class="btn btn-outline-danger">Add to cart</a> </p>
-                    </div>
-                </div>
+                    </td>
+                    <td data-th="Cena">{{ $details['price'] * $details['quantity'] }} zł</td>
+                    <td data-th="Ilość">{{ $details['quantity'] }}</td>
+                    <td class="actions">
+                        <a class="btn btn-outline-danger btn-sm delete-product">Usuń<i class="fa fa-trash-o"></i></a>
+                    </td>
+                </tr>
+                @php $total += $details['price'] * $details['quantity'] @endphp
             @endforeach
-            <?php } ?>
-        </div>
-    </div>
+        @endif
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="5" class="text-right">
+                <h4>Suma: {{$total}} zł</h4>
+                <a href="{{ url('/') }}" class="btn btn-primary"><i class="fa fa-angle-left"></i> Kontynuuj zakupy</a>
+                <button class="btn btn-danger pay">Zapłać</button>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
 </section>
+
+
+<script type="text/javascript">
+    $(".edit-cart-info").change(function (e) {
+        e.preventDefault();
+        var ele = $(this);
+        $.ajax({
+            url: '{{ route('cart.update') }}',
+            method: "patch",
+            data: {
+                _token: '{{ csrf_token() }}',
+                id: ele.parents("tr").attr("rowId"),
+            },
+            success: function (response) {
+                window.location.reload();
+            }
+        });
+    });
+
+    $(".delete-product").click(function (e) {
+        e.preventDefault();
+        var ele = $(this);
+        if (confirm("Czy na pewno chcesz usunąć pozycję?")) {
+            $.ajax({
+                url: '{{ route('cart.delete') }}',
+                method: "DELETE",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: ele.parents("tr").attr("rowId")
+                },
+                success: function (response) {
+                    window.location.reload();
+                }
+            });
+        }
+    });
+
+    $(".pay").click(function (e) {
+        e.preventDefault();
+        var ele = $(this);
+        if (confirm("Czy na pewno chcesz złożyć zamówienie?")) {
+            $.ajax({
+                url: '{{ route('cart.pay') }}',
+                method: "PATCH",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: ele.parents("tr").attr("rowId")
+                },
+                success: function (response) {
+                    window.location.reload();
+                }
+            });
+        }
+    });
+
+</script>
+
+
 <!-- Footer-->
 <footer class="py-5 bg-dark">
     <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
 </footer>
-<!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Core theme JS-->
 <script src="{{asset('js/scripts.js')}}"></script>
 </body>

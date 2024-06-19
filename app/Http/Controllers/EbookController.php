@@ -21,7 +21,7 @@ class EbookController extends Controller
 
     public function details($id)
     {
-        $ebook = DB::table('ebooks')->where('id', $id)->first();
+        $ebook = Ebook::findOrFail($id);
         $categories = Category::all();
         $authors = Author::all();
         $ebook_cat_name = DB::table('categories')->where('id', $ebook->category_id)->first()->name;
