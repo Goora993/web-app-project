@@ -23,16 +23,19 @@ class EbookController extends Controller
     {
         $ebook = Ebook::findOrFail($id);
         $categories = Category::all();
+        $categories = $categories->except($ebook->category_id);
         $authors = Author::all();
+        $authors = $authors->except($ebook->author_id);
+        $ebook_author = DB::table('authors')->where('id', $ebook->author_id)->first();
         $ebook_cat_name = DB::table('categories')->where('id', $ebook->category_id)->first()->name;
-        $ebook_author_name = DB::table('authors')->where('id', $ebook->author_id)->first()->name;
+        $ebook_author_name =  $ebook_author->name;
 
         if (Auth::user() == null) {
             return view('user.ebook.details', ['ebook' => $ebook, 'categories' => $categories, 'ebook_cat_name' => $ebook_cat_name, 'ebook_author_name' => $ebook_author_name]);
         } else {
             return Auth::user()->roles()->first()->name == 'admin'
                 ?
-                view('admin.ebook.details', ['ebook' => $ebook, 'authors' => $authors, 'categories' => $categories, 'ebook_cat_name' => $ebook_cat_name, 'ebook_author_name' => $ebook_author_name])
+                view('admin.ebook.details', ['ebook' => $ebook, 'authors' => $authors, 'categories' => $categories, 'ebook_cat_name' => $ebook_cat_name, 'ebook_author'=> $ebook_author])
                 :
                 view('user.ebook.details', ['ebook' => $ebook, 'categories' => $categories, 'ebook_cat_name' => $ebook_cat_name, 'ebook_author_name' => $ebook_author_name]);
         }
@@ -80,7 +83,12 @@ class EbookController extends Controller
         $ebookAuthor = $req->author;
         $author = $this->createAuthorFromEbookAuthor($ebookAuthor);
         $category = $this->getCategory($req->category);
-        $image = $this->saveImage($req->file('image'));
+
+
+        if ($req->hasFile('image'))
+            $image = $this->saveImage($req->file('image'));
+        else
+            $image = $ebook->image;
 
         $ebook->title = $req->title;
         $ebook->publisher = $req->publisher;
@@ -92,7 +100,7 @@ class EbookController extends Controller
 
         if (Auth::user()->roles()->first()->name == 'admin') {
             $ebook->update();
-            return redirect('/');
+            return redirect()->back();
         } else {
             abort(403);
         }

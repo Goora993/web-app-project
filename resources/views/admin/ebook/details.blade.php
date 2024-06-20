@@ -79,14 +79,16 @@
 <section class="py-5">
     <form id="editEbookForm" action="{{ route('ebook.update', ['id' => $ebook->id]) }}" method="POST" novalidate="novalidate" enctype="multipart/form-data">
         {{ csrf_field() }}
+        @method('patch')
         <div class="form-group col-md-6">
             <label for="inputEbookTitle">Tytuł</label>
-            <input type="text" class="form-control" id="inputEbookTitle" name="title" placeholder="Nowy tytuł"
+            <input type="text" class="form-control" required="required" id="inputEbookTitle" name="title" placeholder="Nowy tytuł"
                    value="{{$ebook->title}}">
         </div>
         <div class="form-group col-md-4">
             <label for="inputEbookCat">Kategoria</label>
-            <select id="inputEbookCat" name="category" class="form-control">
+            <select id="inputEbookCat" required="required" name="category" class="form-control">
+                <option value="{{$ebook_cat_name}}" selected>{{$ebook_cat_name}}</option>
                 @foreach($categories as $category)
                     <option value="{{$category['name']}}">{{$category['name']}}</option>
                 @endforeach
@@ -94,15 +96,15 @@
         </div>
         <div class="form-group col-md-6">
             <label for="price">Cena</label>
-            <input type="number" class="form-control" id="price" name="price" placeholder="0.0" value="{{$ebook->price}}">
+            <input type="number" class="form-control" required="required" id="price" name="price" placeholder="0.0" value="{{$ebook->price}}">
         </div>
         <div class="form-group col-md-6">
             <label for="inputEbookPublisher">Wydawnictwo</label>
-            <input type="text" class="form-control" id="inputEbookPublisher" name="publisher" placeholder="Nowe wydawnictwo" value="{{$ebook->publisher}}">
+            <input type="text" class="form-control" required="required" id="inputEbookPublisher" name="publisher" placeholder="Nowe wydawnictwo" value="{{$ebook->publisher}}">
         </div>
         <div class="form-group">
             <label for="ebookDescription">Opis</label>
-            <textarea type="text" class="form-control" id="ebookDescription" name="description"
+            <textarea type="text" class="form-control" required="required" id="ebookDescription" name="description"
                       placeholder="Nowy opis">{{$ebook->description}}</textarea>
         </div>
         <div class="form-group">
@@ -114,7 +116,9 @@
         <div class="form-group col-md-4">
             <label for="ebookAuthor">Autor</label>
             <select id="ebookAuthor" name="author" class="form-control">
-                <option value="{{$ebook_author_name}}" selected>{{$ebook_author_name}}</option>
+                <option value="{{$ebook_author->id . " " . $ebook_author->name}}" selected>
+                    {{$ebook_author->id . " " . $ebook_author->name}}
+                </option>
                 @foreach($authors as $author)
                     <option value="{{$author['id'] . " " . $author['name']}}">
                         {{$author['id'] . " " . $author['name']}}

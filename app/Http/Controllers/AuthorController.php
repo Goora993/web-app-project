@@ -29,7 +29,7 @@ class AuthorController extends Controller
 
         if (Auth::user()->roles()->first()->name == 'admin') {
             $author->save();
-            return redirect('/');
+            return redirect()->back();
         } else {
             abort(403);
         }

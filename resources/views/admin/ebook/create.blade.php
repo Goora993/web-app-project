@@ -75,15 +75,15 @@
 </header>
 <!-- Section-->
 <section class="py-5">
-    <form id="addEbookForm" action="{{ route('ebook.store') }}" method="POST" novalidate="novalidate" enctype="multipart/form-data">
+    <form id="addEbookForm" action="{{ route('ebook.store') }}" method="POST" enctype="multipart/form-data">
         {{ csrf_field() }}
         <div class="form-group col-md-6">
             <label for="inputEbookTitle">Tytuł</label>
-            <input type="text" class="form-control" id="inputEbookTitle" name="title" placeholder="Tytuł">
+            <input type="text" class="form-control" id="inputEbookTitle" required="required" name="title" placeholder="Tytuł">
         </div>
         <div class="form-group col-md-4">
             <label for="inputEbookCat">Kategoria</label>
-            <select id="inputEbookCat" name="category" class="form-control">
+            <select id="inputEbookCat" required="required" name="category" class="form-control">
                 @foreach($categories as $category)
                     <option value="{{$category['name']}}">{{$category['name']}}</option>
                 @endforeach
@@ -91,23 +91,23 @@
         </div>
         <div class="form-group col-md-6">
             <label for="price">Cena</label>
-            <input type="number" class="form-control" id="price" name="price" placeholder="0.0">
+            <input type="number" class="form-control" id="price" required="required" name="price" placeholder="0.0">
         </div>
         <div class="form-group col-md-6">
             <label for="inputEbookPublisher">Wydawnictwo</label>
-            <input type="text" class="form-control" id="inputEbookPublisher" name="publisher" placeholder="Wydawnictwo">
+            <input type="text" class="form-control" id="inputEbookPublisher" required="required" name="publisher" placeholder="Wydawnictwo">
         </div>
         <div class="form-group">
             <label for="ebookDescription">Opis</label>
-            <textarea type="text" class="form-control" id="ebookDescription" name="description" placeholder="Opis"></textarea>
+            <textarea type="text" class="form-control" id="ebookDescription" required="required" name="description" placeholder="Opis"></textarea>
         </div>
         <div class="form-group">
             <label for="ebookImage">Okładka</label>
-            <input type="file" class="form-control-file" id="ebookImage" name="image" accept="image/*" >
+            <input type="file" class="form-control-file" id="ebookImage" required="required" name="image" accept="image/*" >
         </div>
         <div class="form-group col-md-4">
             <label for="ebookAuthor">Autor</label>
-            <select id="ebookAuthor" name="author" class="form-control">
+            <select id="ebookAuthor" required="required" name="author" class="form-control">
                 @foreach($authors as $author)
                     <option value="{{$author['id'] . " " . $author['name']}}">
                         {{$author['id'] . " " . $author['name']}}

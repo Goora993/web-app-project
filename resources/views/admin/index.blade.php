@@ -135,11 +135,6 @@
                                 {{$ebook->price}} zł
                             </div>
                         </div>
-                        <!-- Product actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Dodaj do
-                                    koszyka</a></div>
-                        </div>
                     </div>
                 </div>
             @endforeach
@@ -149,7 +144,7 @@
 </section>
 <!-- Footer-->
 <footer class="py-5 bg-dark">
-    <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
+    <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Skelp z Ebookami 2024</p></div>
 </footer>
 <!-- Bootstrap core JS-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>

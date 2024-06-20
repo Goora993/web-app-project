@@ -31,9 +31,6 @@
                             <td class="actions">
                                 <a class="btn btn-outline-danger btn-sm delete-user">Usuń<i class="fa fa-trash-o"></i></a>
                             </td>
-{{--                            <form action="{{ route('user.delete', ['id'=>$user->id]) }}" method="delete">--}}
-{{--                                <a class="btn btn-outline-danger btn-sm delete-product">Usuń<i class="fa fa-trash-o"></i></a>--}}
-{{--                            </form>--}}
                         </tr>
                     @endforeach
                     </tbody>
