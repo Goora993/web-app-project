@@ -116,7 +116,7 @@
             <div class="alert alert-warning
         	            text-center p-5"
                  role="alert">
-                <img src="img/empty.png"
+                <img src="storage/static/empty-search.png"
                      width="100">
                 <br>
                 Brak książek w bazie danych

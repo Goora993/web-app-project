@@ -106,6 +106,16 @@ class EbookController extends Controller
         }
     }
 
+    public function delete($id) {
+        if (Auth::user()->roles()->first()->name == 'admin') {
+            $ebook = Ebook::findOrFail($id);
+            $ebook->delete();
+            return redirect('/');
+        } else {
+            abort(403);
+        }
+    }
+
     private function createAuthorFromEbookAuthor($ebookAuthor): Author
     {
         $parts = preg_split('/\s+/', $ebookAuthor);

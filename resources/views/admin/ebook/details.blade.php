@@ -11,6 +11,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"/>
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="{{asset('css/styles.css')}}" rel="stylesheet"/>
+    <!-- JQuery-->
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <!-- Core theme JS-->
+    <script src="{{asset('js/scripts.js')}}"></script>
 </head>
 
 <body>
@@ -130,9 +134,13 @@
             <button type="submit" style="float: right" class="btn btn-primary">Aktualizuj</button>
         </div>
     </form>
-    <div class="form-group">
-        <button style="float: right" class="btn btn-primary">Usuń</button>
-    </div>
+    <form action="{{ route('ebook.delete', ['id' => $ebook->id]) }}" method="POST">
+        {{ csrf_field() }}
+        @method('delete')
+        <div class="actions form-group">
+            <button style="float: right" class="btn btn-primary">Usuń</button>
+        </div>
+    </form>
 </section>
 <!-- Footer-->
 <footer class="py-5 bg-dark">
