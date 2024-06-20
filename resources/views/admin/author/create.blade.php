@@ -4,13 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dodaj książkę</title>
+    <title>Autorzy</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico"/>
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"/>
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="{{asset('css/styles.css')}}" rel="stylesheet"/>
+    <!-- JQuery-->
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 </head>
 
 <body>
@@ -24,7 +26,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Strona główna</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{route('ebook.create')}}">Dodaj książkę</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{route('ebook.create')}}">Dodaj ebook</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{route('author.create')}}">Dodaj autora</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
@@ -91,7 +93,16 @@
             @foreach($authors as $author)
                 <tr>
                     <td>{{$author['id']}}</td>
-                    <td> {{$author['name']}}</td>
+                    <td class="actions">
+                        <form action="{{ route('author.update', ['id' => $author->id]) }}" method="POST" novalidate="novalidate" enctype="multipart/form-data">
+                            {{ csrf_field() }}
+                            @method('patch')
+                            <input type="text" class="form-control-author" name="name" placeholder="Podaj imię i nazwisko autora" value="{{$author['name']}}">
+                            <button class="button-no-border edit-author">
+                                <img src="{{ url('storage/static/checkmark.png') }}" width="20">
+                            </button>
+                        </form>
+                    </td>
                     <td class="actions">
                         <a class="btn btn-outline-danger btn-sm delete-user">Usuń<i class="fa fa-trash-o"></i></a>
                     </td>
@@ -118,3 +129,22 @@
 </footer>
 </body>
 </html>
+
+<script type="text/javascript">
+    $(".delete-user").click(function (e) {
+        e.preventDefault();
+        var ele = $(this)
+        if (confirm("Czy na pewno chcesz usunąć autora?")) {
+            $.ajax({
+                url: '{{ route('author.delete', ['id'=>$author->id]) }}',
+                method: "DELETE",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                },
+                success: function () {
+                    window.location.reload();
+                }
+            });
+        }
+    });
+</script>

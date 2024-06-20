@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
-    <title>Shop Homepage - Start Bootstrap Template</title>
+    <title>Strona główna</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico"/>
     <!-- Bootstrap icons-->
@@ -147,10 +147,7 @@
                             </div>
                         </div>
                         <!-- Product actions-->
-{{--                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">--}}
-{{--                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ route('cart.add', ['id' => $ebook->id]) }}">Dodaj do koszyka</a></div>--}}
-{{--                        </div>--}}
-                        <p class="btn-holder"><a href="{{ route('cart.add', $ebook->id) }}" class="btn btn-outline-danger">Add to cart</a> </p>
+                        <p class="card-footer p-4 pt-0 border-top-0 bg-transparent text-center"><a href="{{ route('cart.add', $ebook->id) }}" class="btn btn-outline-danger">Add to cart</a> </p>
                     </div>
                 </div>
             @endforeach
